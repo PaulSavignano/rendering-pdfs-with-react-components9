@@ -7,7 +7,6 @@ let module
 const getBase64String = (path) => {
   try {
     const file = fs.readFileSync(path)
-    console.log(file)
     return new Buffer(file).toString('base64')
   } catch (exception) {
     module.reject(exception)
@@ -18,10 +17,10 @@ const generatePDF = (html, fileName) => {
   try {
     pdf.create(html, {
       format: 'letter',
-      border: { top: '0.6in', right: '0.6in', bottom: '0.6in', left: '0.6in' }
+      border: { top: '0.6in', right: '0.6in', bottom: '0.6in', left: '0.6in' },
     }).toFile(`./tmp/${fileName}`, (error, response) => {
       if (error) {
-        module.reject(exception)
+        module.reject(error)
       } else {
         module.resolve({ fileName, base64: getBase64String(response.filename) })
         fs.unlink(response.filename)
@@ -32,7 +31,7 @@ const generatePDF = (html, fileName) => {
   }
 }
 
-const getComponentAsHTML = (component, fileName) => {
+const getComponentAsHTML = (component, props) => {
   try {
     return ReactDOMServer.renderToStaticMarkup(component(props))
   } catch (exception) {
@@ -40,10 +39,10 @@ const getComponentAsHTML = (component, fileName) => {
   }
 }
 
-const handler = ({ component, props, fileName }, promise) {
+const handler = ({ component, props, fileName }, promise) => {
   module = promise
   const html = getComponentAsHTML(component, props)
-  if (html & fileName) generatePDF(html, fileName)
+  if (html && fileName) generatePDF(html, fileName)
 }
 
 export const generateComponentAsPDF = (options) => {

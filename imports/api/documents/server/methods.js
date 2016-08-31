@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor'
-import { SimpleSchema } from 'meteor/aleed:simple-schema'
-import { ValidatedMethod } from 'meteor/mdg:valiated-method'
+import { SimpleSchema } from 'meteor/aldeed:simple-schema'
+import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import { Documents } from '../documents'
 import { Document } from '../../../ui/components/document'
 import { generateComponentAsPDF } from '../../../modules/server/generate-pdf'
